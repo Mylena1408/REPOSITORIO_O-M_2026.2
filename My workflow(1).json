@@ -1,0 +1,829 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -704,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "2467418e-1a84-4a43-a8ea-9b00d3305a3a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6634628f-94bd-4502-bea2-880a4a4103c8",
+              "leftValue": "={{$json.temperatura}}",
+              "rightValue": "={{$json.limite}}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -176,
+        144
+      ],
+      "id": "3cd56a73-69c9-42da-bd13-4c15facd7c22",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9737fdf4-15cd-4ce1-b371-d5f470c68a56",
+              "name": "status",
+              "value": "alerta",
+              "type": "string"
+            },
+            {
+              "id": "25406d70-9fd7-4015-ab38-7203e6107ea3",
+              "name": "prioridade",
+              "value": "Alta Prioridade",
+              "type": "string"
+            },
+            {
+              "id": "c81f7536-e383-41d2-a123-161e3c9d8600",
+              "name": "mensagem",
+              "value": "Temperatura acima do limite permitido",
+              "type": "string"
+            },
+            {
+              "id": "75670eaf-ad4d-47d2-af32-781128e1e59b",
+              "name": "acao",
+              "value": "acionar equipe de manutencao",
+              "type": "string"
+            },
+            {
+              "id": "c57141e5-d3e6-4099-88c0-dc81ca970635",
+              "name": "status",
+              "value": "critico",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        48,
+        0
+      ],
+      "id": "2baad35a-9c8f-4489-b643-6ab5f77ab7db",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f837a6a-3b4f-44f4-b70e-7c8084b92d8e",
+              "name": "status",
+              "value": "Normal",
+              "type": "string"
+            },
+            {
+              "id": "ba4339c3-8b60-463b-b50c-63668d6a8989",
+              "name": "mensagem",
+              "value": "Equipamento operando dentro dos parametros",
+              "type": "string"
+            },
+            {
+              "id": "0f0d5287-972c-4af1-b664-ab0d4f9dd1f8",
+              "name": "acao",
+              "value": "nenhuma intervencao necessaria",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        496,
+        240
+      ],
+      "id": "1f0e2f72-7582-4677-bc64-6cbe1c13505f",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {
+          "fileName": "incidente_alerta.json"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        272,
+        0
+      ],
+      "id": "bb39f290-1d03-45f2-934a-31d29b7f38c7",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        144
+      ],
+      "id": "5eef1144-7007-4282-9db8-ef262247098e",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1ff5ba28-fdb0-4d35-a78a-d0eab33c150a",
+              "name": "",
+              "value": "=📊 RELATÓRIO COLDGUARD\n\n🚨 Status: {{$json.status}}\n\n⚠️ Prioridade:\n{{$json.prioridade}}\n\n📝 Mensagem:\n{{$json.mensagem}}\n\n🔧 Ação recomendada:\n{{$json.acao}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        496,
+        0
+      ],
+      "id": "673a713e-d491-47c5-b2d8-07f5397c581a",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        720,
+        48
+      ],
+      "id": "ce5d7b86-ffb4-4217-beb4-5bcc674b25b2",
+      "name": "Merge",
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e78fcad9-dd60-4a9e-ba53-16ad2479bd6c",
+              "name": "relatorio final",
+              "value": "=📊 RELATÓRIO COLDGUARD  🏭 Empresa: {{$json.empresa}} 🔧 Equipamento: {{$json.equipamento}} 📍 Local: {{$json.local}}  🕒 Data/Hora: {{$json.data_hora}}  🌡️ Temperatura: {{$json.temperatura}} °C 🎯 Limite: {{$json.limite}} °C  🚦 Status: {{$json.status}} ⚠️ Prioridade: {{$json.prioridade}}  📝 Mensagem: {{$json.mensagem}}  🔧 Ação recomendada: {{$json.acao}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        944,
+        48
+      ],
+      "id": "1f4a9df7-6582-49df-98f0-9ca5364a7dc0",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4ac93fff-f1b9-4613-bc9c-3c68db548e60",
+              "name": "equipamento",
+              "value": "Compressor camara 01",
+              "type": "string"
+            },
+            {
+              "id": "985d52b5-4f7f-4e62-8e15-174f2fd4bd28",
+              "name": "temperatura",
+              "value": 2999,
+              "type": "number"
+            },
+            {
+              "id": "ab53ca38-9770-4f14-9e55-9d957cffd088",
+              "name": "limite",
+              "value": 8,
+              "type": "number"
+            },
+            {
+              "id": "159f5283-532a-4036-bea9-bddc6d4112e8",
+              "name": "local",
+              "value": "Camara Fria A",
+              "type": "string"
+            },
+            {
+              "id": "de78e68d-42e7-486d-a745-0eec25ae35f1",
+              "name": "data_hora",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "22d3ad24-7610-4158-b08e-40ec84ce939a",
+              "name": "empresa",
+              "value": "MRC Cliente Demo",
+              "type": "string"
+            },
+            {
+              "id": "48e23c3f-099c-4762-9618-8029b5463728",
+              "name": "local",
+              "value": "Belém-PA",
+              "type": "string"
+            },
+            {
+              "id": "d7a7de42-ec9e-4e06-86ed-3d29864dfd28",
+              "name": "empresa",
+              "value": "MRC Cliente Demo",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -400,
+        144
+      ],
+      "id": "c18a0b2b-5e75-4cb4-8228-f064431e7027",
+      "name": "Entrada Maquina 01"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        288
+      ],
+      "id": "5abc8cad-1737-456d-9bf8-ef5a59d3cbcd",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6634628f-94bd-4502-bea2-880a4a4103c8",
+              "leftValue": "={{$json.temperatura}}",
+              "rightValue": "={{$json.limite}}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -400,
+        608
+      ],
+      "id": "27c4c765-49ec-4860-9948-fea4b03e14ec",
+      "name": "Condição"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9737fdf4-15cd-4ce1-b371-d5f470c68a56",
+              "name": "alerta",
+              "value": "🚨 ALERTA DE RISCO",
+              "type": "string"
+            },
+            {
+              "id": "25406d70-9fd7-4015-ab38-7203e6107ea3",
+              "name": "prioridade",
+              "value": "Alta Prioridade",
+              "type": "string"
+            },
+            {
+              "id": "c81f7536-e383-41d2-a123-161e3c9d8600",
+              "name": "mensagem",
+              "value": "Temperatura acima do limite permitido",
+              "type": "string"
+            },
+            {
+              "id": "75670eaf-ad4d-47d2-af32-781128e1e59b",
+              "name": "acao",
+              "value": "Acionar equipe de manutencao",
+              "type": "string"
+            },
+            {
+              "id": "c57141e5-d3e6-4099-88c0-dc81ca970635",
+              "name": "status",
+              "value": "critico",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -176,
+        512
+      ],
+      "id": "4e048af3-6241-4164-b919-8527a58458da",
+      "name": "RISCO"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f837a6a-3b4f-44f4-b70e-7c8084b92d8e",
+              "name": "alerta",
+              "value": "Alerta Regular",
+              "type": "string"
+            },
+            {
+              "id": "ba4339c3-8b60-463b-b50c-63668d6a8989",
+              "name": "mensagem",
+              "value": "Equipamento operando dentro dos parâmetros",
+              "type": "string"
+            },
+            {
+              "id": "0f0d5287-972c-4af1-b664-ab0d4f9dd1f8",
+              "name": "acao",
+              "value": "Nenhuma intervenção necessária",
+              "type": "string"
+            },
+            {
+              "id": "61b771c5-a3d6-473f-8562-9c174efc54a6",
+              "name": "status",
+              "value": "DENTRO DO PARÂMETROS",
+              "type": "string"
+            },
+            {
+              "id": "e0c9bc43-6137-47ac-9b60-8557f05cca79",
+              "name": "prioridade",
+              "value": "Normal",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -176,
+        704
+      ],
+      "id": "892d1373-47b4-4541-8cd1-2cbd86014921",
+      "name": "REGULAR"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7ca0bfb3-8f2b-4d47-aec0-1f0a34b1d9d2",
+              "name": "relatorio_html",
+              "value": "={{ `\n<div style=\"font-family: Arial, sans-serif; border: 2px solid ${$json.status === 'critico' ? '#ff4d4d' : '#4dff79'}; padding: 20px; border-radius: 8px;\">\n  <h2 style=\"color: ${$json.status === 'critico' ? '#d93838' : '#27ae60'}; margin-top: 0;\">📊 RELATÓRIO COLDGUARD - NOTIFICAÇÃO</h2>\n  <hr>\n  <p><strong>🏭 Empresa:</strong> ${$node[\"Entrada Maquina \"].json.empresa}</p>\n  <p><strong>🔧 Equipamento:</strong> ${$node[\"Entrada Maquina \"].json.equipamento}</p>\n  <p><strong>📍 Local:</strong> ${$node[\"Entrada Maquina \"].json.local}</p>\n  <p><strong>🕒 Data/Hora:</strong> ${$node[\"Entrada Maquina \"].json.data_hora}</p>\n  <br>\n  <div style=\"background-color: ${$json.status === 'critico' ? '#ffe6e6' : '#e6ffe6'}; padding: 10px; border-left: 5px solid ${$json.status === 'critico' ? '#d93838' : '#27ae60'};\">\n    <p style=\"margin: 5px 0;\"><strong>🌡️ Temperatura Atual:</strong> <span style=\"color: ${$json.status === 'critico' ? 'red' : 'green'}; font-size: 16px; font-weight: bold;\">${$node[\"Entrada Maquina \"].json.temperatura} °C</span></p>\n    <p style=\"margin: 5px 0;\"><strong>🎯 Limite Permitido:</strong> ${$node[\"Entrada Maquina \"].json.limite} °C</p>\n    <p style=\"margin: 5px 0;\"><strong>🚦 Status:</strong> ${$json.status}</p>\n    <p style=\"margin: 5px 0;\"><strong>⚠️ Prioridade:</strong> ${$json.prioridade || 'Normal'}</p>\n  </div>\n  <br>\n  <p><strong>📝 Mensagem:</strong> ${$json.mensagem}</p>\n  <p><strong>🔧 Ação Recomendada:</strong> ${$json.acao}</p>\n</div>\n` }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "Status",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        48,
+        608
+      ],
+      "id": "c6a40e82-f2fa-4913-9b37-bf6d52a7d9d6",
+      "name": "RELATÓRIO"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $node[\"Entrada Maquina \"].json.email_cliente }}",
+        "subject": "={{ $json.alerta + ': ' + $node[\"Entrada Maquina \"].json.equipamento }}",
+        "message": "={{$node[\"RELATÓRIO\"].json.relatorio_html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        608
+      ],
+      "id": "d5a7615c-3751-427f-afa3-28dd4919f55f",
+      "name": "ENVIA EMAIL",
+      "webhookId": "0e53ea3b-49af-4818-ae99-269f4a527b69"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        960,
+        176
+      ],
+      "typeVersion": 1,
+      "id": "d9a3f71d-e46b-41dc-84e9-eaffcdccc00d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f6e2954f-0079-42f0-8386-b195d7f9a6d3",
+              "name": "Equipamento",
+              "value": "Compressor camera 01",
+              "type": "string"
+            },
+            {
+              "id": "af9423b1-d076-42fd-a66c-ff7316b20df9",
+              "name": "Temperatura",
+              "value": 60,
+              "type": "number"
+            },
+            {
+              "id": "632e7c73-ccea-4933-821b-f12e6b61c754",
+              "name": "Limite",
+              "value": 8,
+              "type": "number"
+            },
+            {
+              "id": "710dc667-dec3-43ae-90cc-9773073ca9f4",
+              "name": "Local",
+              "value": "Camara Fria A",
+              "type": "string"
+            },
+            {
+              "id": "dec0c393-ebf4-4fe9-932a-58178f8ed8f6",
+              "name": "Empresa",
+              "value": "MRC Cliente Demo",
+              "type": "string"
+            },
+            {
+              "id": "a9f04ae1-5926-4218-ac3a-94bc0f0c7431",
+              "name": "email_cliente",
+              "value": "carlos.silvapires@hotmail.com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -800,
+        608
+      ],
+      "id": "4b9f8a1e-d3db-4e33-b8c8-6c970e9c9e3b",
+      "name": "Entrada Maquina "
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -992,
+        608
+      ],
+      "id": "6818efb9-dca6-4b4e-b049-96f6b084fcf1",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -592,
+        608
+      ],
+      "id": "cd563893-d84a-4994-9ee6-f57908adbdcc",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f6e2954f-0079-42f0-8386-b195d7f9a6d3",
+              "name": "Equipamento",
+              "value": "Compressor camera 02",
+              "type": "string"
+            },
+            {
+              "id": "af9423b1-d076-42fd-a66c-ff7316b20df9",
+              "name": "Temperatura",
+              "value": 5,
+              "type": "number"
+            },
+            {
+              "id": "632e7c73-ccea-4933-821b-f12e6b61c754",
+              "name": "Limite",
+              "value": 8,
+              "type": "number"
+            },
+            {
+              "id": "710dc667-dec3-43ae-90cc-9773073ca9f4",
+              "name": "Local",
+              "value": "Camara Fria B",
+              "type": "string"
+            },
+            {
+              "id": "dec0c393-ebf4-4fe9-932a-58178f8ed8f6",
+              "name": "Empresa",
+              "value": "MRC Cliente Demo",
+              "type": "string"
+            },
+            {
+              "id": "a9f04ae1-5926-4218-ac3a-94bc0f0c7431",
+              "name": "email_cliente",
+              "value": "carlos.silvapires@hotmail.com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -800,
+        432
+      ],
+      "id": "527f6832-447f-4412-91c8-62482ecbd612",
+      "name": "Entrada Maquina 2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Entrada Maquina 01",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entrada Maquina 01": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Condição": {
+      "main": [
+        [
+          {
+            "node": "RISCO",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "REGULAR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RISCO": {
+      "main": [
+        [
+          {
+            "node": "RELATÓRIO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "REGULAR": {
+      "main": [
+        [
+          {
+            "node": "RELATÓRIO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RELATÓRIO": {
+      "main": [
+        [
+          {
+            "node": "ENVIA EMAIL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entrada Maquina ": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Entrada Maquina ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Condição",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entrada Maquina 2": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "a4366ebd-a85b-424b-995f-d297fe0a96d9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "64e6cc573ebe2225c5a73e455bd60a9186b18cb414346f220aeff1c0ff79a433"
+  },
+  "nodeGroups": [],
+  "id": "KK9MFOYJwzMT1glN",
+  "tags": []
+}
